@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { sendMessage } from './axios'
 
 function App() {
@@ -18,6 +18,8 @@ function App() {
   const [title3, setTitle3] = useState("")
   const [discription, setDiscription] = useState("")
 
+  const [name4, setName4] = useState("")
+  const [birthday, setBirthday] = useState("")
 
   return (
     <div className="App">
@@ -57,6 +59,14 @@ function App() {
         <input onChange={(e) => setDiscription(e.target.value)}/>
         <button onClick={async (e) => {await sendMessage('post', 'straw', {params:{name: name3, title: title3, content: content3, discription}})}}>post straw</button>
         <button onClick={async (e) => {await sendMessage('get', 'straw')}}>get straw</button>
+      </div>
+      <div>
+        <input onChange={(e) => setName4(e.target.value)}/>
+        <input type="date" onChange={(e) => {
+          const s = e.target.value.split('-')
+          setBirthday(Date.UTC(s[0],s[1],s[2]))
+        }}/>
+        <button onClick={async (e) => {await sendMessage('get', 'divination', {params:{name: name4, birthday}})}}>get divination</button>
       </div>
     </div>
   );

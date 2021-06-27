@@ -22,14 +22,20 @@ const strawSchema = new Schema({
     discription: { type: String, required: true },
 })
 
+const divinationSchema = new Schema({
+    content: { type: String, required: true }
+})
+
 const IncenseArticleModel = mongoose.model('IncenseArticle', incenseArticleSchema)
 const IncenseModel = mongoose.model('Incense', incenseSchema)
 const StrawModel = mongoose.model('Straw', strawSchema)
+const DivinationModel = mongoose.model('Divination', divinationSchema)
 
 const db = {
     IncenseArticleModel,
     IncenseModel,
-    StrawModel
+    StrawModel,
+    DivinationModel
 }
 
 export default db

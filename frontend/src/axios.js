@@ -3,7 +3,7 @@ import axios from 'axios'
 const instance = axios.create({ baseURL: "http://localhost:5000" })
 
 const sendMessage = async (type, url, message) => {
-    console.log(message)
+    console.log("SEND MESSAGE:", message)
     let res
     switch(type){
         case "post":

@@ -96,4 +96,13 @@ router.get('/straw', async (req, res) => {
     res.send(straw)
 })
 
+router.get('/divination', async (req, res) => {
+    const { name, birthday } = req.query
+    const count = await db.DivinationModel.countDocuments({})
+    const index = HASH(name, birthday, count)
+    const divinations = await db.DivinationModel.find({})
+    const divination = divinations[index]
+    res.send(divination)
+})
+
 export default router
