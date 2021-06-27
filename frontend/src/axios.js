@@ -8,6 +8,7 @@ const sendMessage = async (type, url, message) => {
     switch(type){
         case "post":
             res = await instance.post(url, message)
+            console.log(res)
             return res
         case "get":
             res = await instance.get(url, message)
