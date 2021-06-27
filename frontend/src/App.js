@@ -56,9 +56,7 @@ function App() {
         <input onChange={(e) => setContent3(e.target.value)}/>
         <input onChange={(e) => setDiscription(e.target.value)}/>
         <button onClick={async (e) => {await sendMessage('post', 'straw', {params:{name: name3, title: title3, content: content3, discription}})}}>post straw</button>
-      </div>
-      <div>
-        {console.log("fcgvbhijnhguvygubhnij".hashCode)}
+        <button onClick={async (e) => {await sendMessage('get', 'straw')}}>get straw</button>
       </div>
     </div>
   );

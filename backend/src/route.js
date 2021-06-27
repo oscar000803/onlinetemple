@@ -1,5 +1,6 @@
 import express from 'express'
 import db from './db'
+import HASH from '../util/hash'
 
 const router = express.Router()
 
@@ -87,6 +88,12 @@ router.post('/straw', async (req, res) => {
     res.send()
 })
 
-
+router.get('/straw', async (req, res) => {
+    const count = await db.StrawModel.countDocuments({})
+    const index = Math.floor(Math.random() * count)
+    const straws = await db.StrawModel.find({})
+    const straw = straws[index]
+    res.send(straw)
+})
 
 export default router
