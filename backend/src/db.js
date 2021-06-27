@@ -6,7 +6,7 @@ const incenseArticleSchema = new Schema({
     name: { type: String, required: true },
     title: { type: String, required: true },
     content: { type: String, required: true },
-    incense: { type: mongoose.Types.ObjectId, ref: 'incense' }
+    incense: [{ type: mongoose.Types.ObjectId, ref: 'incense' }]
 })
 
 const incenseSchema = new Schema({
