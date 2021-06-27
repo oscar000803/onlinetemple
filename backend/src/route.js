@@ -110,8 +110,11 @@ router.post('/light', async (req, res) => {
         name
     }).save()
     res.send()
-
 })
 
+router.get('/light', async (req, res) => {
+    const lights = await db.LightModel.find({})
+    res.send(lights)
+})
 
 export default router

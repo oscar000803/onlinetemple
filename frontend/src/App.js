@@ -21,6 +21,8 @@ function App() {
   const [name4, setName4] = useState("")
   const [birthday, setBirthday] = useState("")
 
+  const [name5, setName5] = useState("")
+
   return (
     <div className="App">
       <div>
@@ -67,6 +69,11 @@ function App() {
           setBirthday(Date.UTC(s[0],s[1],s[2]))
         }}/>
         <button onClick={async (e) => {await sendMessage('get', 'divination', {params:{name: name4, birthday}})}}>get divination</button>
+      </div>
+      <div>
+        <input onChange={(e) => setName5(e.target.value)}/>
+        <button onClick={async (e) => {await sendMessage('post', 'light', {params:{name: name5}})}}>post light</button>
+        <button onClick={async (e) => {await sendMessage('get', 'light')}}>get light</button>
       </div>
     </div>
   );
