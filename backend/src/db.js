@@ -12,7 +12,7 @@ const incenseArticleSchema = new Schema({
 const incenseSchema = new Schema({
     name: { type: String, required: true },
     content: { type: String, required: true },
-    data: { type: Date, required: true }
+    time: { type: Number, required: true }
 })
 
 const IncenseArticleModel = mongoose.model('IncenseArticle', incenseArticleSchema)

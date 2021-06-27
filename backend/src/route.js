@@ -63,4 +63,18 @@ router.post('/incenseArticle', async (req, res) => {
     res.send()
 })
 
+router.post('/incense', async (req, res) => {
+    const { incenseArticle_id, name, content, time } = req.body.params
+    console.log(req.body)
+    const Incense = await db.IncenseModel({
+        name,
+        content,
+        time
+    }).save()
+    const incenseArticle = await db.IncenseArticleModel.findById(incenseArticle_id)
+    incenseArticle.incense.push(Incense._id)
+    incenseArticle.save()
+    res.send()
+})
+
 export default router
