@@ -48,13 +48,12 @@ router.get('/incenseArticle/brief', async (req, res) => {
 
 router.get('/incenseArticle/detail', async (req, res) => {
     const { incenseArticle_id } = req.query
-    let incenseArticle = await db.IncenseArticleModel.findById(incenseArticle_id)
+    let incenseArticle = await db.IncenseArticleModel.findById(incenseArticle_id).populate([{ path: 'incense'}])
     res.send({incenseArticle})
 })
 
 router.post('/incenseArticle', async (req, res) => {
     const { name, title, content } = req.body.params
-    console.log(name, title, content)
     const newIncenseArticle = await new db.IncenseArticleModel({
         name,
         title,
@@ -104,5 +103,15 @@ router.get('/divination', async (req, res) => {
     const divination = divinations[index]
     res.send(divination)
 })
+
+router.post('/light', async (req, res) => {
+    const { name } = req.body.params
+    await new db.LightModel({
+        name
+    }).save()
+    res.send()
+
+})
+
 
 export default router
