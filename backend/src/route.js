@@ -65,7 +65,6 @@ router.post('/incenseArticle', async (req, res) => {
 
 router.post('/incense', async (req, res) => {
     const { incenseArticle_id, name, content, time } = req.body.params
-    console.log(req.body)
     const Incense = await db.IncenseModel({
         name,
         content,
@@ -76,5 +75,18 @@ router.post('/incense', async (req, res) => {
     incenseArticle.save()
     res.send()
 })
+
+router.post('/straw', async (req, res) => {
+    const { title, content, discription, name } = req.body.params
+    await new db.StrawModel({
+        title,
+        content,
+        name,
+        discription
+    }).save()
+    res.send()
+})
+
+
 
 export default router

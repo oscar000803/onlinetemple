@@ -13,6 +13,12 @@ function App() {
   const [date, setDate] = useState("")
   const [time, setTime] = useState("")
 
+  const [name3, setName3] = useState("")
+  const [content3, setContent3] = useState("")
+  const [title3, setTitle3] = useState("")
+  const [discription, setDiscription] = useState("")
+
+
   return (
     <div className="App">
       <div>
@@ -43,6 +49,16 @@ function App() {
           const t = Date.UTC(ds[0], ds[1], ds[2], ts[0], ts[1])
           await sendMessage('post', 'incense', {params:{incenseArticle_id: incenseArticle_ids[0], name: name2, content: content2, time: t}})
         }}>post incenseArticle</button>
+      </div>
+      <div>
+        <input onChange={(e) => setName3(e.target.value)}/>
+        <input onChange={(e) => setTitle3(e.target.value)}/>
+        <input onChange={(e) => setContent3(e.target.value)}/>
+        <input onChange={(e) => setDiscription(e.target.value)}/>
+        <button onClick={async (e) => {await sendMessage('post', 'straw', {params:{name: name3, title: title3, content: content3, discription}})}}>post straw</button>
+      </div>
+      <div>
+        {console.log("fcgvbhijnhguvygubhnij".hashCode)}
       </div>
     </div>
   );

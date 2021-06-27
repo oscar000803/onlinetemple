@@ -15,12 +15,21 @@ const incenseSchema = new Schema({
     time: { type: Number, required: true }
 })
 
+const strawSchema = new Schema({
+    title: { type: String, required: true },
+    content: { type: String, required: true },
+    name: { type: String, required: true },
+    discription: { type: String, required: true },
+})
+
 const IncenseArticleModel = mongoose.model('IncenseArticle', incenseArticleSchema)
 const IncenseModel = mongoose.model('Incense', incenseSchema)
+const StrawModel = mongoose.model('Straw', strawSchema)
 
 const db = {
     IncenseArticleModel,
-    IncenseModel
+    IncenseModel,
+    StrawModel
 }
 
 export default db
