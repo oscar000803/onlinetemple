@@ -7,13 +7,24 @@ const sendMessage = async (type, url, message) => {
     let res
     switch(type){
         case "post":
-            res = await instance.post(url, message)
-            console.log(res)
-            return res
+            try{
+                res = await instance.post(url, message)
+                console.log(res)
+                return res
+            }catch(e){
+                console.log(e.response)
+            }
+            break
         case "get":
-            res = await instance.get(url, message)
-            console.log(res)
-            return res
+            try{
+                res = await instance.get(url, message)
+                console.log(res)
+                return res
+            }
+            catch(e){
+                console.log(e.response)
+            }
+            break
         default:
             return []
     }

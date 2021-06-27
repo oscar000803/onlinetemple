@@ -52,7 +52,7 @@ function App() {
           const ts = time.split(':')
           const t = Date.UTC(ds[0], ds[1], ds[2], ts[0], ts[1])
           await sendMessage('post', 'incense', {params:{incenseArticle_id: incenseArticle_ids[0], name: name2, content: content2, time: t}})
-        }}>post incenseArticle</button>
+        }}>post incense</button>
       </div>
       <div>
         <input onChange={(e) => setName3(e.target.value)}/>
