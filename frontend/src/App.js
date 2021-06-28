@@ -16,7 +16,7 @@ function App() {
   const [name3, setName3] = useState("")
   const [content3, setContent3] = useState("")
   const [title3, setTitle3] = useState("")
-  const [discription, setDiscription] = useState("")
+  const [description, setDescription] = useState("")
 
   const [name4, setName4] = useState("")
   const [birthday, setBirthday] = useState("")
@@ -58,8 +58,8 @@ function App() {
         <input onChange={(e) => setName3(e.target.value)}/>
         <input onChange={(e) => setTitle3(e.target.value)}/>
         <input onChange={(e) => setContent3(e.target.value)}/>
-        <input onChange={(e) => setDiscription(e.target.value)}/>
-        <button onClick={async (e) => {await sendMessage('post', 'straw', {params:{name: name3, title: title3, content: content3, discription}})}}>post straw</button>
+        <input onChange={(e) => setDescription(e.target.value)}/>
+        <button onClick={async (e) => {await sendMessage('post', 'straw', {params:{name: name3, title: title3, content: content3, description: description}})}}>post straw</button>
         <button onClick={async (e) => {await sendMessage('get', 'straw')}}>get straw</button>
       </div>
       <div>
