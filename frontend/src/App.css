@@ -1,38 +1,268 @@
-.App {
-  text-align: center;
+.horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.vertical {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+}
+
+.content {
+  min-height: 95vh;
+}
+
+.nameBox {
+  min-width: 90px;
+  color: azure;
+  justify-content: space-around;
+}
+
+.nameBox span{
+  margin: 0px 10px 0px 0px;
+}
+
+.push-right {
+  margin-left: auto;
+}
+
+.push-down {
+  margin-top: auto;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Header */
+.Header {
+  min-height: 5vh;
+  background-color: rgb(6, 23, 43);
+  padding-right: 10px;
+}
+
+.Header button {
+  margin: 0px 10px 0px 10px;
+  color: azure;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+/* Home */
+.wallpaper {
+  background-image: url('./pictures/flipermag-2019-12-30_14-56-22_012373.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow:inset 0 0 0 2000px rgba(52, 54, 54, 0.349);
+  min-height: 95vh;
+}
+
+.wallpaper h1 {
+  color: azure;
+  font-size: 80px;
+}
+
+.wallpaper h3 {
+  color: azure;
+  font-size: 20px;
+}
+
+.function-panel {
+  min-height: 400px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: rgb(235, 235, 235);
+}
+
+.function-box {
+  width: 400px;
+  height: 400px;
+  padding: 10px 10px 10px 10px;
+}
+
+.function-box button {
+  background-color: rgba(0, 0, 0, 0);
+  font-size:large;
+  border: none;
+}
+
+.function-box button h1 {
+  color: black;
+  font-weight: bold;
+}
+
+.function-box button:hover {
+	transform : scale(1.2);
+  transition-duration: 0.5s;
+}
+
+/* Incense */
+.Incense-container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+}
+
+.IncenseArticle-list {
+  background-color: rgb(228, 228, 228);
+  width: 20vw;
+  height: 95vh;
+}
+
+.IncenseArticle-list-panel {
+  height: 100px;
+  justify-content: space-evenly;
+}
+
+.IncenseArticle {
+  width: 80vw;
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  background-image: url('./pictures/香爐.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px 20px 20px 20px;
+  box-shadow:inset 0 0 0 2000px rgba(54, 54, 54, 0.3);
+}
+
+.IncenseArticle-info-box {
+  color: white;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.IncenseArticle-info-panel {
+  color: white;
+  width: 100%;
+}
+
+.IncenseArticle-info-panel button {
+  margin: 0px 10px 0px 10px;
+}
+
+.IncenseArticle-info {
+  width: 400px;
+  align-items: flex-start;
+  padding: 0px 10px 10px 10px;
+}
+
+.IncenseArticle-info h1 {
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.IncenseArticle-content {
+  width: 100%;
+  color: white;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.IncenseArticle-list span{
+  margin: 0px 10px 0px 0px;
+}
+
+.Incense-list {
+  background-color: rgb(255, 255, 255);
+  padding: 0px 20px 0px 20px;
+  min-width: 100%;
+  max-height: 80%;
+  border-radius: 10px;
+  overflow: auto;
+}
+
+/* Straw */
+.Straw {
+  color: white;
+  background-image: url('./pictures/2239027-XXL.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow:inset 0 0 0 2000px rgba(41, 41, 41, 0.404);
+  font-size: x-large;
+}
+
+.Straw h1 {
+  color: white;
+  font-weight: bold;
+}
+
+.Straw h2 {
+  color: white;
+  font-weight: bold;
+}
+
+.Straw button {
+  margin: 10px;
+}
+
+/* Divination */
+.Divination {
+  background-image: url('./pictures/2018062908069667a5.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow:inset 0 0 0 2000px rgba(51, 51, 51, 0.3);
+}
+
+.Divination-panel {
+  width: 500px;
+  height: 500px;
+  justify-content: space-evenly;
+}
+
+.Divination-panel h1 {
+  color: white;
+}
+
+.Divination-result {
+  width: 500px;
+  height: 500px;
+  justify-content: space-evenly;
+  color: white;
+}
+
+.Divination-result h1 {
+  color: white;
+}
+
+/* Light */
+.Light {
+  background-image: url('./pictures/f6560fc1-0122-4dfb-9d56-79430ed7a0d2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  box-shadow:inset 0 0 0 2000px rgba(102, 70, 0, 0.247);
+  justify-content: flex-start;
+}
+
+.light-panel{
+  min-height: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.light {
+  width: 220px;
+  height: 300px;
+  background-image: url('./pictures/200908115049_imgfull1.jpg');
+  background-size: cover;
+  background-position: center;
+  justify-content: flex-end;
+  background-repeat: no-repeat;
+  margin: 5px 5px 5px 5px;
+}
+
+.light-bar {
+  width: fill;
+  height: 8vh;
 }
