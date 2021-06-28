@@ -41,7 +41,7 @@ router.get('/test', async (req, res) => {
                 title: `straw title ${i}`,
                 content: `straw conent ${i}`,
                 name: `straw ${i}`,
-                discription: `straw discription ${i}`,
+                description: `straw description ${i}`,
             }).save()
         }
         for(var i = 0; i < 10; i++){
@@ -173,16 +173,16 @@ router.post('/incense', async (req, res) => {
 
 router.post('/straw', async (req, res) => {
     try{
-        const { title, content, discription, name } = req.body.params
-        if(!name ||!title || !content || !discription){
-            let message = `${!name?'name':''} ${!time?'time':''} ${!content?'content':''} ${!discription?'discription':''} is required`
+        const { title, content, description, name } = req.body.params
+        if(!name ||!title || !content || !description){
+            let message = `${!name?'name':''} ${!time?'time':''} ${!content?'content':''} ${!description?'description':''} is required`
             throw new Error(message)
         }
         await new db.StrawModel({
             title,
             content,
             name,
-            discription
+            description
         }).save()
         res.send()
     }
