@@ -17,8 +17,49 @@ router.use((req, res, next)=>{
     next()
 })
 
-router.get('/test', (req, res) => {
-
+router.get('/test', async (req, res) => {
+    try{
+        for(var i = 0; i < 10; i++){
+            const IA = await db.IncenseArticleModel({
+                name: `incenseArticle${i}`,
+                title: `incenseArticle title${i}`,
+                content: `incenseArticle content${i}`,
+                incense: []
+            }).save()
+            for(var j = 0; j < 10; j++){
+                const I = await db.IncenseModel({
+                    name: `incense${i}-${j}`,
+                    content: `incense content${i}-${j}`,
+                    time: Date.now()
+                }).save()
+                IA.incense.push(I._id)
+            }
+            IA.save()
+        }
+        for(var i = 0; i < 10; i++){
+            await db.StrawModel({
+                title: `straw title ${i}`,
+                content: `straw conent ${i}`,
+                name: `straw ${i}`,
+                discription: `straw discription ${i}`,
+            }).save()
+        }
+        for(var i = 0; i < 10; i++){
+            await db.DivinationModel({
+                content: `divination conent ${i}`,
+            }).save()
+        }
+        for(var i = 0; i < 10; i++){
+            await db.LightModel({
+               name: `light ${i}`,
+            }).save()
+        }
+        res.send()
+    }
+    catch(e){
+        logErrorMessage(req, e)
+        res.status(400).send({error_message: `${e}`})
+    }
 })
 
 router.get('/incenseArticle/id', async (req, res) => {
