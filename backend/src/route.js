@@ -149,7 +149,7 @@ router.post('/incenseArticle', async (req, res) => {
 router.post('/incense', async (req, res) => {
     try{
         const { incenseArticle_id, name, content, time } = req.body.params
-        if(!name ||!title || !content || !incenseArticle_id){
+        if(!name ||!time || !content || !incenseArticle_id){
             let message = `${!name?'name':''} ${!time?'time':''} ${!content?'content':''} ${!incenseArticle_id?'incenseArticle_id':''} is required`
             throw new Error(message)
         }
