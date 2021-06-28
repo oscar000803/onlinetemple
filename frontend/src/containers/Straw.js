@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Button } from 'antd';
+import { message, Button } from 'antd';
+import { sendMessage } from '../api';
+import StrawModal from '../components/StrawModal'; 
 
-const Straw = () => {
+const Straw = ({ name }) => {
     const [step, setStep] = useState(0);
     const [straw, setStraw] = useState({
         title: "",
@@ -9,12 +11,17 @@ const Straw = () => {
         content: ""
     });
 
-    const getStraw = () => {
-        setStraw({
-            title: "第一籤",
-            content: "日出便見風雲散 光明清淨照世間 一向前途通大道 萬事清吉保平安",
-            discription: ""
-        });
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const createStraw = async({ title, content, description }) => {
+        setModalVisible(false);
+        console.log("create straw : ", title, content, description);
+        await sendMessage('post', 'straw', {params:{name, title, content, description}});
+    }
+
+    const getStraw = async() => {
+        const { data } = await sendMessage('get', 'straw');
+        setStraw(data);
         setStep(2);
     }
 
@@ -42,7 +49,12 @@ const Straw = () => {
                             <p>4.若為聖筊則可觀看詩籤內容。</p>
                             <p>5.若為笑筊或陰筊則需重新求籤。</p>
                             <Button size="large" type="primary" shape="round" onClick={() => setStep(1)}>開始求籤</Button>
-                            <Button shape="round">我要投稿籤詩</Button>
+                            <Button shape="round" onClick={() => {
+                                if(name === "匿名")
+                                    message.error("請先登錄");
+                                else
+                                    setModalVisible(true);
+                            }}>我要投稿籤詩</Button>
                         </>
                     );
                 case 1: //抽籤
@@ -90,6 +102,8 @@ const Straw = () => {
                     );
                 }
             })()}
+            
+            <StrawModal isModalVisible={isModalVisible} setModalVisible={setModalVisible} createStraw={createStraw}/>
         </div>
     );
 }

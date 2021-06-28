@@ -1,6 +1,4 @@
-import { Button } from 'antd';
 import Mode_List from '../hooks/Mode_List';
-import Particles from 'react-particles-js';
 
 const Home = ({changePage}) => (
     <div>
@@ -11,8 +9,8 @@ const Home = ({changePage}) => (
         <div className="function-panel">
             
             {Mode_List.map((mode, i) => (
-                <div className="function-box vertical">
-                    <button key={i} onClick={() => {changePage(mode.modeName)}}>
+                <div className="function-box vertical" key={i}>
+                    <button key={`${i}-button`} onClick={() => {changePage(mode.modeName)}}>
                     <h1>{mode.title}</h1>
                 </button>
                 {mode.discription}

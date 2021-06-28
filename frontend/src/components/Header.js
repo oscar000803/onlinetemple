@@ -1,23 +1,15 @@
 import { useState } from 'react';
-import { Menu, Modal, Button, Form, Input } from 'antd';
+import { message, Menu, Modal, Button, Form, Input } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import Mode_List from '../hooks/Mode_List';
 import NameBox from './NameBox';
 
-const Header = ({mode, changePage, name, setName}) => {
+const Header = ({mode, changePage, name, signIn, signOut}) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const signIn = () => {
-        setIsModalVisible(true);
-    };
-    
-    const signOut = () => {
-        setName("匿名");
-    }
 
     const handleOk = ({ newName }) => {
         setIsModalVisible(false);
-        setName(newName);
+        signIn(newName);
     };
     
     const handleCancel = () => {
@@ -48,7 +40,7 @@ const Header = ({mode, changePage, name, setName}) => {
                         <Button shape="round" onClick={signOut}>登出</Button>
                     </div>
                     :
-                    <Button shape="round" onClick={signIn}>登入</Button>
+                    <Button shape="round" onClick={() => setIsModalVisible(true)}>登入</Button>
                 }
                 <Button shape="circle" icon={<HomeOutlined />} onClick={() => {changePage("Home")}}/>
             </div>
@@ -59,9 +51,12 @@ const Header = ({mode, changePage, name, setName}) => {
                 onCancel={handleCancel}
                 onOk={() => {
                     form.validateFields().then((values) => {
-                    form.resetFields();
-                    handleOk(values);
-                    }).catch((e) => { window.alert(e); });
+                        form.resetFields();
+                        if(values.newName === "匿名")
+                            message.error("您不能取名叫匿名");
+                        else
+                            handleOk(values);
+                        }).catch((e) => { window.alert(e); });
                 }}>
                 <Form form={form} layout="vertical" 
                     name="form_in_modal">

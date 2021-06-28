@@ -1,6 +1,6 @@
 import { Modal, Form, Input } from 'antd';
 
-const IncenseMadal = ({ isIncenseModalVisible, setIncenseModalVisible, createIncense }) => {
+const IncenseModal = ({ isIncenseModalVisible, setIncenseModalVisible, createIncense }) => {
     const [form] = Form.useForm();
     return(
         <Modal
@@ -17,7 +17,7 @@ const IncenseMadal = ({ isIncenseModalVisible, setIncenseModalVisible, createInc
             <Form form={form} layout="vertical" 
                 name="form_in_modal">
                 <Form.Item
-                    name="title" label="留言"
+                    name="content" label="留言"
                     rules={[{
                         required: true,
                         message: "留言內容不能為空！",
@@ -30,4 +30,4 @@ const IncenseMadal = ({ isIncenseModalVisible, setIncenseModalVisible, createInc
     );
 }
 
-export default IncenseMadal;
+export default IncenseModal;

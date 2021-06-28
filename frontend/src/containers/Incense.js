@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Comment, Pagination, Avatar, Button, Menu } from 'antd';
-import IncenseArticleMadal from '../components/IncenseArticleMadal';
-import IncenseMadal from '../components/IncenseMadal';
+import { Divider, Tooltip, Comment, Pagination, Avatar, Button, Menu } from 'antd';
+import IncenseArticleModal from '../components/IncenseArticleModal';
+import IncenseModal from '../components/IncenseModal';
 import NameBox from '../components/NameBox';
+import { sendMessage } from '../api';
+import { UserOutlined } from '@ant-design/icons';
+
+const MAX_ARTICLE_A_PAGE = 16;
 
 const Incense = ({ name }) => {
     //use api to get data
     const [articleListId, setArticleListId] = useState([]);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [articleList, setArticleList] = useState([]);
 
-    const [pickedArticleId, setPickedArticleId] = useState("0");
+    const [pickedArticleId, setPickedArticleId] = useState();
     const [pickedArticle, setPickedArticle] = useState(
         {name: "", title: "", content: "", incense: []}
     );
@@ -18,9 +22,13 @@ const Incense = ({ name }) => {
     const [isArticleModalVisible, setArticleModalVisible] = useState(false);
     const [isIncenseModalVisible, setIncenseModalVisible] = useState(false);
 
-    const createArticle = ({ title, content }) => {
+    const createArticle = async({ title, content }) => {
         setArticleModalVisible(false);
-        console.log("new incense ! :", name, title, content);
+        console.log("new incense article ! :", name, title, content);
+        await sendMessage('post', 'incenseArticle', {params:{name, title, content}});
+        await getIncenseArticleId();
+        let ids = articleListId.slice((page - 1)*MAX_ARTICLE_A_PAGE, page*MAX_ARTICLE_A_PAGE);
+        await getIncenseArticleBrief(ids);
     };
 
     const handleClick = (e) => {
@@ -28,16 +36,39 @@ const Incense = ({ name }) => {
         setPickedArticleId(e.key);
     };
 
-    const createIncense = ({ title, content }) => {
+    const createIncense = async({ content }) => {
         setIncenseModalVisible(false);
-        console.log("new incense ! :", name, title, content);
+        console.log("new incense ! :", name, content);
+        await sendMessage('post', 'incense', {params:{incenseArticle_id: pickedArticleId, name, content, time: Date.now()}});
+        await getIncenseArticleDetail(pickedArticleId);
     };
+
+    const getIncenseArticleId = async() => {
+        console.log("get articleList id");
+        try{
+            const { data } = await sendMessage('get', 'incenseArticle/id');
+            setArticleListId(data.incenseArticle_ids);
+        }catch{
+            console.log("the database is empty");
+        }
+    }
+
+    const getIncenseArticleBrief = async(ids) => {
+        console.log("get article List brief");
+        const { data } = await sendMessage('get', 'incenseArticle/brief', {params:{incenseArticle_ids: ids}});
+        setArticleList(data.incense_brief);
+    }
+
+    const getIncenseArticleDetail = async(id) => {
+        console.log("get article detail");
+        const { data } = await sendMessage('get', 'incenseArticle/detail', {params:{incenseArticle_id: id}});
+        setPickedArticle(data.incenseArticle);
+    }
 
     useEffect(() => {
         if(articleListId.length === 0){
             //use api to get data
-            console.log("get articleList id");
-            setArticleListId([1]);
+            getIncenseArticleId();
         }
     }, [articleListId]);
 
@@ -45,24 +76,18 @@ const Incense = ({ name }) => {
         //use api to get data
         if(articleListId.length !== 0){
             console.log("get articleList");
-            setArticleList([
-                {name: "香客 1", title: "上香文 1", content: "", incenseCount: 0},
-                {name: "香客 2", title: "上香文 2", content: "", incenseCount: 0},
-                {name: "香客 3", title: "上香文 3", content: "", incenseCount: 0},
-            ]);
+            let ids = articleListId.slice((page - 1)*MAX_ARTICLE_A_PAGE, page*MAX_ARTICLE_A_PAGE);
+            getIncenseArticleBrief(ids);
         }
     }, [page, articleListId]);
 
     useEffect(() => {
         //use api to get data
-        console.log("get pickedArticle detail", pickedArticleId);
-        setPickedArticle({name: "香客 1", title: "上香文 1", content: "", incenses: [
-            {name:"香客 1", content:"加油", time:0},
-            {name:"香客 2", content:"你好啊", time:0},
-            {name:"香客 3", content:"嗨!", time:0}
-        ]});
+        if(pickedArticleId !== undefined){
+            console.log("get pickedArticle detail", pickedArticleId);
+            getIncenseArticleDetail(pickedArticleId);
+        }
     }, [pickedArticleId]);
-
 
     return(
         <>
@@ -71,15 +96,17 @@ const Incense = ({ name }) => {
                     <Menu 
                         mode="vertical"
                         onClick={handleClick}
-                        style={{ width: 300 }}
-                        defaultSelectedKeys={[pickedArticleId]}
+                        style={{ width: "20vw" }}
                     >
                         {articleList.map((article, i)=>(
-                            <Menu.Item key={i}>
+                            <Menu.Item key={article.incenseArticle_ids}>
                                 <div>
-                                    <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }}>
-                                        {article.name[0] }
-                                    </Avatar>
+                                    {article.name === "匿名" ? 
+                                        <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }} icon={<UserOutlined />} />
+                                        : 
+                                        <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }}>
+                                            {article.name[0]}
+                                        </Avatar>}
                                     {article.title}
                                 </div>
                             </Menu.Item>
@@ -87,24 +114,33 @@ const Incense = ({ name }) => {
                     </Menu>
                     <div className="push-down"/>
                     <div className="IncenseArticle-list-panel vertical">
-                        <Pagination defaultCurrent={1} total={(articleListId.length / 16) + 1} />
+                        <Pagination current={page} onChange={(page) => setPage(page)} total={Math.ceil(articleListId.length / MAX_ARTICLE_A_PAGE)*10} />
                         <Button type="primary" onClick={()=>setArticleModalVisible(true)}>發上香文</Button>
                     </div>
                 </div>
                 <div className="IncenseArticle">
-                    <div className="IncenseArticle-info-panel horizontal">
-                        <div className="IncenseArticle-info vertical">
-                            <h1>{pickedArticle.title}</h1>
-                            <div className="push-right"/>
-                            <NameBox name={pickedArticle.name}/>
-                            {pickedArticle.content}
+                    <div className="IncenseArticle-info-box vertical">
+                        <div className="IncenseArticle-info-panel horizontal">
+                            {pickedArticleId===undefined ? <></> :
+                            <>
+                                <div className="IncenseArticle-info vertical">
+                                    <h1>{pickedArticle.title}</h1>
+                                    <div className="push-right"/>
+                                    <NameBox name={pickedArticle.name}/>
+                                </div>
+                                <div className="push-right"/>
+                                上香數 : {pickedArticle.incense===undefined? 0 : pickedArticle.incense.length}
+                                <Button shape="round" onClick={()=>setIncenseModalVisible(true)}>上香 \|/</Button>
+                            </>
+                            }
                         </div>
-                        <div className="push-right"/>
-                        上香數 : {pickedArticle.incenses===undefined? 0 : pickedArticle.incenses.length}
-                        <Button shape="round" onClick={()=>setIncenseModalVisible(true)}>上香 \|/</Button>
+                        <div className="IncenseArticle-content">
+                            <pre>{pickedArticle.content}</pre>
+                        </div>
                     </div>
                     <div className="Incense-list">
-                        {pickedArticle.incenses===undefined? <></> : pickedArticle.incenses.map((incense)=> (
+                        {pickedArticle.incense===undefined? <></> : pickedArticle.incense.map((incense)=> (
+                            <>
                             <Comment
                                 author={incense.name}
                                 avatar={
@@ -112,14 +148,21 @@ const Incense = ({ name }) => {
                                         {incense.name[0] }
                                     </Avatar>
                                 }
-                                content={incense.content}
+                                datetime= {
+                                    <Tooltip title={Date(incense.time).toString()}>
+                                      <span>{Date(incense.time).toString().slice(0,10).replace(/-/g,"")}</span>
+                                    </Tooltip>
+                                }
+                                content={<pre>{incense.content}</pre>}
                             />
+                            <Divider style={{ margin: 1 }}/>
+                            </>
                         ))}
                     </div>
                 </div>
             </div>
-            <IncenseArticleMadal isArticleModalVisible={isArticleModalVisible} setArticleModalVisible={setArticleModalVisible} createArticle={createArticle}/>
-            <IncenseMadal isIncenseModalVisible={isIncenseModalVisible} setIncenseModalVisible={setIncenseModalVisible} createIncense={createIncense}/>
+            <IncenseArticleModal isArticleModalVisible={isArticleModalVisible} setArticleModalVisible={setArticleModalVisible} createArticle={createArticle}/>
+            <IncenseModal isIncenseModalVisible={isIncenseModalVisible} setIncenseModalVisible={setIncenseModalVisible} createIncense={createIncense}/>
         </>
     );
 }

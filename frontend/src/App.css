@@ -34,6 +34,11 @@
   margin-top: auto;
 }
 
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 /* Header */
 .Header {
   min-height: 5vh;
@@ -104,8 +109,20 @@
   width: 100vw;
 }
 
+.IncenseArticle-list {
+  background-color: rgb(228, 228, 228);
+  width: 20vw;
+  height: 95vh;
+}
+
+.IncenseArticle-list-panel {
+  height: 100px;
+  justify-content: space-evenly;
+}
+
 .IncenseArticle {
-  width: fill;
+  width: 80vw;
+  height: 95vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -118,20 +135,15 @@
   box-shadow:inset 0 0 0 2000px rgba(54, 54, 54, 0.3);
 }
 
-.IncenseArticle-list {
-  background-color: rgb(228, 228, 228);
-  width: 300px;
-  height: 95vh;
-}
-
-.IncenseArticle-list-panel {
-  height: 100px;
-  justify-content: space-evenly;
+.IncenseArticle-info-box {
+  color: white;
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .IncenseArticle-info-panel {
   color: white;
-  width: fill;
+  width: 100%;
 }
 
 .IncenseArticle-info-panel button {
@@ -139,7 +151,7 @@
 }
 
 .IncenseArticle-info {
-  width: 500px;
+  width: 400px;
   align-items: flex-start;
   padding: 0px 10px 10px 10px;
 }
@@ -148,16 +160,22 @@
   color: white;
 }
 
+.IncenseArticle-content {
+  width: 100%;
+  color: white;
+}
+
 .IncenseArticle-list span{
   margin: 0px 10px 0px 0px;
 }
 
 .Incense-list {
-  background-color: rgba(255, 255, 255, 0.623);
+  background-color: rgb(255, 255, 255);
   padding: 0px 20px 0px 20px;
-  width: 99.5%;
+  min-width: 100%;
   max-height: 80%;
   border-radius: 10px;
+  overflow: auto;
 }
 
 /* Straw */

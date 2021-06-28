@@ -1,69 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { message, Button } from 'antd';
+import { sendMessage } from '../api';
 
-const Light = ({ name }) => {
-    const [lights_list, setLights_list] = useState([
-        {name: "香客 1"},
-        {name: "香客 2"},
-        {name: "香客 3"},
-        {name: "香客 4"},
-        {name: "香客 5"},
-        {name: "香客 6"},
-        {name: "香客 1"},
-        {name: "香客 2"},
-        {name: "香客 3"},
-        {name: "香客 4"},
-        {name: "香客 5"},
-        {name: "香客 6"},
-        {name: "香客 1"},
-        {name: "香客 2"},
-        {name: "香客 3"},
-        {name: "香客 4"},
-        {name: "香客 5"},
-        {name: "香客 6"},
-        {name: "香客 1"},
-        {name: "香客 2"},
-        {name: "香客 3"},
-        {name: "香客 4"},
-        {name: "香客 5"},
-        {name: "香客 6"},
-        {name: "香客 1"},
-        {name: "香客 2"},
-        {name: "香客 3"},
-        {name: "香客 4"},
-        {name: "香客 5"},
-        {name: "香客 6"},
-        {name: "香客 1"},
-        {name: "香客 2"},
-        {name: "香客 3"},
-        {name: "香客 4"},
-        {name: "香客 5"},
-        {name: "香客 6"},
-        {name: "香客 1"},
-        {name: "香客 2"},
-        {name: "香客 3"},
-        {name: "香客 4"},
-        {name: "香客 5"},
-        {name: "香客 6"},
-        {name: "香客 1"},
-        {name: "香客 2"},
-        {name: "香客 3"},
-        {name: "香客 4"},
-        {name: "香客 5"},
-        {name: "香客 6"},
-    ]);
+const Light = ({ name, hasLight, turnLight }) => {
+    const [light_list, setLight_list] = useState([]);
 
-    const createLight = () => {
+    const getLightList = async() => {
+        const { data } = await sendMessage('get', 'light');
+        console.log(data);
+        setLight_list(data);
+    }
+
+    const createLight = async() => {
         if(name === "匿名")
             message.error('請先登錄');
+        else if(hasLight)
+            message.error('您已經點過光明燈了');
         else
+        {
             console.log('create light : ', name);
+            turnLight();
+            await sendMessage('post', 'light', {params:{name}});
+            await getLightList();
+        }
     }
+
+    useEffect(() => {
+        //use api to get data
+        if(light_list.length === 0){
+            console.log("get light list");
+            getLightList();
+        }
+    }, [light_list]);
 
     return(
         <div className="vertical content Light">
             <div className="light-panel">
-                {lights_list.map((light, i) => (
+                {light_list.map((light, i) => (
                     <div key={i} className="light vertical">
                         <h1>{light.name}</h1>
                     </div>

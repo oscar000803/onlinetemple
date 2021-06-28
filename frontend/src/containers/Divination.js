@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { message, DatePicker, Input, Button } from 'antd';
+import { sendMessage } from '../api';
 
 const Divination = ({ name }) => {
     const [realName, setRealName] = useState(name);
@@ -14,14 +15,21 @@ const Divination = ({ name }) => {
         setBirthday(dateString);
     }
 
-    const startDivinate = () => {
+    const startDivinate = async() => {
         if(realName === "匿名" || birthday === "")
             message.error('請輸入真實姓名');
         else
         {
             console.log("startDivinate :", realName, birthday);
-            setDivination({content: "大吉"})
+            const { data } = await sendMessage('get', 'divination', {params:{name, birthday}})
+            setDivination(data);
         }
+    }
+
+    const endDivinate = () => {
+        setDivination({content: ""});
+        setBirthday("");
+        setRealName("");
     }
 
     return(
@@ -32,7 +40,7 @@ const Divination = ({ name }) => {
                         <h1>算命結果</h1>
                         {divination.content}
                     </div>
-                    <Button type="primary" shape="round" onClick={()=>setDivination({content: ""})}>返回</Button>
+                    <Button type="primary" shape="round" onClick={endDivinate}>返回</Button>
                 </div>
             :
                 <div className="Divination-panel vertical">
@@ -41,7 +49,7 @@ const Divination = ({ name }) => {
                         <Input placeholder="輸入真實姓名" value={realName} onChange={onInputName}/>
                     </div>
                     <div className="vertical">
-                        <h1>出身日期</h1>
+                        <h1>出生日期</h1>
                         <DatePicker onChange={onPickDate} />
                     </div>
                     <Button type="primary" shape="round" onClick={startDivinate}>開始算命</Button>
