@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Divider, Tooltip, Comment, Pagination, Avatar, Button, Menu } from 'antd';
+import { Input, Select, Divider, Tooltip, Comment, Pagination, Avatar, Button, Menu } from 'antd';
 import IncenseArticleModal from '../components/IncenseArticleModal';
 import IncenseModal from '../components/IncenseModal';
 import NameBox from '../components/NameBox';
@@ -7,12 +7,17 @@ import { sendMessage } from '../api';
 import { UserOutlined } from '@ant-design/icons';
 
 const MAX_ARTICLE_A_PAGE = 16;
+const { Option } = Select;
+const { Search } = Input;
 
 const Incense = ({ name }) => {
     //use api to get data
     const [articleListId, setArticleListId] = useState([]);
     const [page, setPage] = useState(1);
     const [articleList, setArticleList] = useState([]);
+
+    const [queryType, setQueryType] = useState("IncenseArticle");
+    const [query, setQuery] = useState("");
 
     const [pickedArticleId, setPickedArticleId] = useState();
     const [pickedArticle, setPickedArticle] = useState(
@@ -22,11 +27,17 @@ const Incense = ({ name }) => {
     const [isArticleModalVisible, setArticleModalVisible] = useState(false);
     const [isIncenseModalVisible, setIncenseModalVisible] = useState(false);
 
+    const onSearch = async(value) => {
+        console.log("Search :", queryType, value);
+        setQuery(value);
+        await getIncenseArticleId(value);
+    }
+
     const createArticle = async({ title, content }) => {
         setArticleModalVisible(false);
         console.log("new incense article ! :", name, title, content);
         await sendMessage('post', 'incenseArticle', {params:{name, title, content}});
-        await getIncenseArticleId();
+        await getIncenseArticleId("");
         let ids = articleListId.slice((page - 1)*MAX_ARTICLE_A_PAGE, page*MAX_ARTICLE_A_PAGE);
         await getIncenseArticleBrief(ids);
     };
@@ -43,20 +54,33 @@ const Incense = ({ name }) => {
         await getIncenseArticleDetail(pickedArticleId);
     };
 
-    const getIncenseArticleId = async() => {
-        console.log("get articleList id");
+    const getIncenseArticleId = async(query) => {
+        let type = queryType;
+        if (query === "")
+            type = ""
+        console.log("get articleList id", query);
         try{
-            const { data } = await sendMessage('get', 'incenseArticle/id');
-            setArticleListId(data.incenseArticle_ids);
+            const { data } = await sendMessage('get', 'incenseArticle/id', {params:{queryType: type, query}});
+            setArticleListId(data.incenseArticle_ids.reverse());
         }catch{
             console.log("the database is empty");
+            setArticleListId([]);
         }
     }
 
     const getIncenseArticleBrief = async(ids) => {
-        console.log("get article List brief");
-        const { data } = await sendMessage('get', 'incenseArticle/brief', {params:{incenseArticle_ids: ids}});
-        setArticleList(data.incense_brief);
+        if(ids.length === 0)
+            setArticleList([]);
+        else{
+            try{
+                console.log("get article List brief");
+                const { data } = await sendMessage('get', 'incenseArticle/brief', {params:{incenseArticle_ids: ids}});
+                setArticleList(data.incense_brief);
+            }catch{
+                console.log("the database is empty");
+                setArticleList([]);
+            }
+        }
     }
 
     const getIncenseArticleDetail = async(id) => {
@@ -66,9 +90,10 @@ const Incense = ({ name }) => {
     }
 
     useEffect(() => {
-        if(articleListId.length === 0){
+        if(articleListId.length === 0 && query === ""){
             //use api to get data
-            getIncenseArticleId();
+            console.log("get all article");
+            getIncenseArticleId("");
         }
     }, [articleListId]);
 
@@ -78,6 +103,10 @@ const Incense = ({ name }) => {
             console.log("get articleList");
             let ids = articleListId.slice((page - 1)*MAX_ARTICLE_A_PAGE, page*MAX_ARTICLE_A_PAGE);
             getIncenseArticleBrief(ids);
+        }
+        else
+        {
+            getIncenseArticleBrief([]);
         }
     }, [page, articleListId]);
 
@@ -90,9 +119,17 @@ const Incense = ({ name }) => {
     }, [pickedArticleId]);
 
     return(
-        <>
+        <div className="content">
+            {/* <div className="Header-space-box"/> */}
             <div className="Incense-container">
                 <div className="IncenseArticle-list vertical">
+                    <Input.Group compact>
+                        <Select style={{ width: "40%" }} defaultValue="IncenseArticle" onChange={(value) => setQueryType(value)}>
+                            <Option value="IncenseArticle">上香文標題</Option>
+                            <Option value="Initiator">發起者姓名</Option>
+                        </Select>
+                        <Search allowClear enterButton style={{ width: "60%" }} defaultValue="" onSearch={onSearch}/>
+                    </Input.Group>
                     <Menu 
                         mode="vertical"
                         onClick={handleClick}
@@ -100,7 +137,7 @@ const Incense = ({ name }) => {
                     >
                         {articleList.map((article, i)=>(
                             <Menu.Item key={article.incenseArticle_ids}>
-                                <div>
+                                <div className="IncenseArticleBox">
                                     {article.name === "匿名" ? 
                                         <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }} icon={<UserOutlined />} />
                                         : 
@@ -138,16 +175,18 @@ const Incense = ({ name }) => {
                             <pre>{pickedArticle.content}</pre>
                         </div>
                     </div>
-                    <div className="Incense-list">
-                        {pickedArticle.incense===undefined? <></> : pickedArticle.incense.map((incense)=> (
+                    {pickedArticle.incense.length===0? <></> : 
+                        <div className="Incense-list">
+                        {pickedArticle.incense.map((incense)=> (
                             <>
                             <Comment
                                 author={incense.name}
-                                avatar={
-                                    <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }}>
-                                        {incense.name[0] }
-                                    </Avatar>
-                                }
+                                avatar={incense.name === "匿名" ? 
+                                <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }} icon={<UserOutlined />} />
+                                : 
+                                <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }}>
+                                    {incense.name[0]}
+                                </Avatar>}
                                 datetime= {
                                     <Tooltip title={Date(incense.time).toString()}>
                                       <span>{Date(incense.time).toString().slice(0,10).replace(/-/g,"")}</span>
@@ -158,12 +197,12 @@ const Incense = ({ name }) => {
                             <Divider style={{ margin: 1 }}/>
                             </>
                         ))}
-                    </div>
+                    </div>}
                 </div>
             </div>
             <IncenseArticleModal isArticleModalVisible={isArticleModalVisible} setArticleModalVisible={setArticleModalVisible} createArticle={createArticle}/>
             <IncenseModal isIncenseModalVisible={isIncenseModalVisible} setIncenseModalVisible={setIncenseModalVisible} createIncense={createIncense}/>
-        </>
+        </div>
     );
 }
 

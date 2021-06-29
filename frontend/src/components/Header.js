@@ -24,7 +24,7 @@ const Header = ({mode, changePage, name, signIn, signOut}) => {
                 {mode === "Home" ? 
                 <></>
                 :
-                <Menu mode="horizontal" defaultSelectedKeys={mode} theme="dark">
+                <Menu style={{height: 50}}mode="horizontal" defaultSelectedKeys={mode} theme="dark">
                     {Mode_List.map((mode) => (
                         <Menu.Item key={mode.modeName} onClick={() => {changePage(mode.modeName)}}>{mode.title}</Menu.Item>
                     ))}

@@ -20,9 +20,13 @@ const Divination = ({ name }) => {
             message.error('請輸入真實姓名');
         else
         {
-            console.log("startDivinate :", realName, birthday);
-            const { data } = await sendMessage('get', 'divination', {params:{name, birthday}})
-            setDivination(data);
+            try{
+                console.log("startDivinate :", realName, birthday);
+                const { data } = await sendMessage('get', 'divination', {params:{name, birthday}})
+                setDivination(data);
+            }catch{
+                message.error("請確認是否有正確連網");
+            }
         }
     }
 
@@ -38,7 +42,7 @@ const Divination = ({ name }) => {
                 <div className="Divination-result vertical">
                     <div className="vertical">
                         <h1>算命結果</h1>
-                        {divination.content}
+                        <pre>{divination.content}</pre>
                     </div>
                     <Button type="primary" shape="round" onClick={endDivinate}>返回</Button>
                 </div>

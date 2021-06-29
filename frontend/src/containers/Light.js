@@ -6,9 +6,14 @@ const Light = ({ name, hasLight, turnLight }) => {
     const [light_list, setLight_list] = useState([]);
 
     const getLightList = async() => {
-        const { data } = await sendMessage('get', 'light');
-        console.log(data);
-        setLight_list(data);
+        console.log("get light List id");
+        try{
+            const { data } = await sendMessage('get', 'light');
+            setLight_list(data);
+        }catch{
+            console.log("the database is empty");
+        }
+        
     }
 
     const createLight = async() => {
@@ -35,6 +40,7 @@ const Light = ({ name, hasLight, turnLight }) => {
 
     return(
         <div className="vertical content Light">
+            {/* <div className="Header-space-box"/> */}
             <div className="light-panel">
                 {light_list.map((light, i) => (
                     <div key={i} className="light vertical">

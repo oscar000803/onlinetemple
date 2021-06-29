@@ -1,6 +1,9 @@
 import axios from 'axios'
 
-const instance = axios.create({ baseURL: 'http://localhost:5000' })
+import dotenv from 'dotenv-defaults';
+dotenv.config();
+
+const instance = axios.create({ baseURL: process.env.REACT_APP_SERVER_URL })
 
 const sendMessage = async (type, url, message) => {
     console.log("SEND MESSAGE:", message)
