@@ -64,7 +64,15 @@ router.get('/test', async (req, res) => {
 
 router.get('/incenseArticle/id', async (req, res) => {
     try{
-        const IA_id = await db.IncenseArticleModel.find({}, '_id')
+        const { queryType, query } = req.query
+        console.log("query id :", queryType, query)
+        let IA_id = [];
+        if(queryType === "")
+            IA_id = await db.IncenseArticleModel.find({}, '_id')
+        else if (queryType === "IncenseArticle")
+            IA_id = await db.IncenseArticleModel.find({title: query}, '_id')
+        else if (queryType === "Initiator")
+            IA_id = await db.IncenseArticleModel.find({name: query}, '_id')
         let incenseArticle_ids = []
         IA_id.forEach((object) => {
             incenseArticle_ids.push(object._id)
@@ -210,6 +218,7 @@ router.get('/straw', async (req, res) => {
 
 router.post('/divination', async (req, res) => {
     try{
+        console.log("get post divination :", req.body.params)
         const { content } = req.body.params
         if(!content)
             throw new Error('content is required')

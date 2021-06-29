@@ -19,7 +19,7 @@ const strawSchema = new Schema({
     title: { type: String, required: true },
     content: { type: String, required: true },
     name: { type: String, required: true },
-    discription: { type: String, required: true },
+    description: { type: String, required: true },
 })
 
 const divinationSchema = new Schema({
