@@ -10,7 +10,7 @@ services:
       MONGO_URL: mongodb+srv://oscar000803:L2-X6!z!Vfqpi2n@cluster0.ekwhi.mongodb.net/onlinetemple?retryWrites=true&w=majority
       PORT: 5000
   frontend:
-    build:
+    build: 
       context: ./frontend
-    ports:
+    ports: 
       - 3000:3000
