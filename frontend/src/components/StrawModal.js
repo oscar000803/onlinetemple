@@ -2,6 +2,7 @@ import { Modal, Form, Input } from 'antd';
 
 const StrawModal = ({ isModalVisible, setModalVisible, createStraw }) => {
     const [form] = Form.useForm();
+    const { TextArea } = Input;
     return(
         <Modal
             visible={isModalVisible}
@@ -32,7 +33,7 @@ const StrawModal = ({ isModalVisible, setModalVisible, createStraw }) => {
                         message: "籤詩內容不能為空！",
                     },]}
                 >
-                    <Input/>
+                    <TextArea rows={4}/>
                 </Form.Item>
                 <Form.Item
                     name="description" label="解曰"
@@ -41,7 +42,7 @@ const StrawModal = ({ isModalVisible, setModalVisible, createStraw }) => {
                         message: "解曰內容不能為空！",
                     },]}
                 >
-                    <Input/>
+                    <TextArea rows={10} />
                 </Form.Item>
             </Form>
         </Modal>

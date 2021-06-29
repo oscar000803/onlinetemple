@@ -40,7 +40,7 @@ const Light = ({ name, hasLight, turnLight }) => {
 
     return(
         <div className="vertical content Light">
-            <div className="Header-space-box"/>
+            {/* <div className="Header-space-box"/> */}
             <div className="light-panel">
                 {light_list.map((light, i) => (
                     <div key={i} className="light vertical">

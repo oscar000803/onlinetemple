@@ -20,9 +20,15 @@ const Straw = ({ name }) => {
     }
 
     const getStraw = async() => {
-        const { data } = await sendMessage('get', 'straw');
-        setStraw(data);
-        setStep(2);
+        try{
+            const { data } = await sendMessage('get', 'straw');
+            setStraw(data);
+            setStep(2);
+        }catch{
+            message.error("請確認是否有正確連網");
+            setStep(0);
+        }
+        
     }
 
     const toss = () => {
@@ -78,9 +84,9 @@ const Straw = ({ name }) => {
                             <h1>聖筊 ! </h1>
                             <p>表示神明允許、同意，或行事會順利。</p>
                             <h2>籤詩</h2>
-                            {straw.content}
+                            <pre>{straw.content}</pre>
                             <h2>解曰</h2>
-                            {straw.discription}
+                            <pre>{straw.description}</pre>
                             <Button size="large" type="primary" shape="round" onClick={() => setStep(0)}>返回</Button>
                         </>
                     );

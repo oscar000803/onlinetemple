@@ -14,7 +14,9 @@
 
 .content {
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
+  padding-top: 50px;
+  overflow: auto;
 }
 
 .nameBox {
@@ -42,6 +44,7 @@ pre {
 
 /* Header */
 .Header {
+  z-index: 100;
   height: 50px;
   width: 100vw;
   background-color: rgb(6, 23, 43);
@@ -113,15 +116,17 @@ pre {
 
 /* Incense */
 .Incense-container {
+  height: 100%;
   display: flex;
   flex-direction: row;
+  overflow: auto;
 }
 
 .IncenseArticle-list {
   padding-top: 3px;
   background-color: rgb(228, 228, 228);
   width: 20vw;
-  height: 95vh;
+  height: 100%;
   overflow: auto;
 }
 
@@ -136,7 +141,7 @@ pre {
 
 .IncenseArticle {
   width: 80vw;
-  height: 95vh;
+  height: 100%;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -161,6 +166,7 @@ pre {
 .IncenseArticle-info-panel {
   color: white;
   width: 100%;
+  height: fit-content;
 }
 
 .IncenseArticle-info-panel button {
@@ -221,6 +227,10 @@ pre {
   margin: 10px;
 }
 
+.Straw pre {
+  max-width: 1000px;
+}
+
 /* Divination */
 .Divination {
   background-image: url('./pictures/2018062908069667a5.jpg');
@@ -245,10 +255,12 @@ pre {
   height: 500px;
   justify-content: space-evenly;
   color: white;
+  font-size: large;
 }
 
 .Divination-result h1 {
   color: white;
+  font-weight: bold;
 }
 
 /* Light */
@@ -267,6 +279,8 @@ pre {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  height: fit-content;
+  margin-bottom: 700px;
 }
 
 .light {
@@ -281,6 +295,8 @@ pre {
 }
 
 .light-bar {
+  position: fixed;
+  bottom: 0;
   width: fill;
   height: 8vh;
 }

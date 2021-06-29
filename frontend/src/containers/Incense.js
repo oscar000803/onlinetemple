@@ -17,6 +17,7 @@ const Incense = ({ name }) => {
     const [articleList, setArticleList] = useState([]);
 
     const [queryType, setQueryType] = useState("IncenseArticle");
+    const [query, setQuery] = useState("");
 
     const [pickedArticleId, setPickedArticleId] = useState();
     const [pickedArticle, setPickedArticle] = useState(
@@ -28,6 +29,7 @@ const Incense = ({ name }) => {
 
     const onSearch = async(value) => {
         console.log("Search :", queryType, value);
+        setQuery(value);
         await getIncenseArticleId(value);
     }
 
@@ -35,7 +37,7 @@ const Incense = ({ name }) => {
         setArticleModalVisible(false);
         console.log("new incense article ! :", name, title, content);
         await sendMessage('post', 'incenseArticle', {params:{name, title, content}});
-        await getIncenseArticleId();
+        await getIncenseArticleId("");
         let ids = articleListId.slice((page - 1)*MAX_ARTICLE_A_PAGE, page*MAX_ARTICLE_A_PAGE);
         await getIncenseArticleBrief(ids);
     };
@@ -52,23 +54,33 @@ const Incense = ({ name }) => {
         await getIncenseArticleDetail(pickedArticleId);
     };
 
-    const getIncenseArticleId = async({ query }) => {
+    const getIncenseArticleId = async(query) => {
         let type = queryType;
         if (query === "")
             type = ""
-        console.log("get articleList id");
+        console.log("get articleList id", query);
         try{
             const { data } = await sendMessage('get', 'incenseArticle/id', {params:{queryType: type, query}});
             setArticleListId(data.incenseArticle_ids.reverse());
         }catch{
             console.log("the database is empty");
+            setArticleListId([]);
         }
     }
 
     const getIncenseArticleBrief = async(ids) => {
-        console.log("get article List brief");
-        const { data } = await sendMessage('get', 'incenseArticle/brief', {params:{incenseArticle_ids: ids}});
-        setArticleList(data.incense_brief);
+        if(ids.length === 0)
+            setArticleList([]);
+        else{
+            try{
+                console.log("get article List brief");
+                const { data } = await sendMessage('get', 'incenseArticle/brief', {params:{incenseArticle_ids: ids}});
+                setArticleList(data.incense_brief);
+            }catch{
+                console.log("the database is empty");
+                setArticleList([]);
+            }
+        }
     }
 
     const getIncenseArticleDetail = async(id) => {
@@ -78,8 +90,9 @@ const Incense = ({ name }) => {
     }
 
     useEffect(() => {
-        if(articleListId.length === 0){
+        if(articleListId.length === 0 && query === ""){
             //use api to get data
+            console.log("get all article");
             getIncenseArticleId("");
         }
     }, [articleListId]);
@@ -90,6 +103,10 @@ const Incense = ({ name }) => {
             console.log("get articleList");
             let ids = articleListId.slice((page - 1)*MAX_ARTICLE_A_PAGE, page*MAX_ARTICLE_A_PAGE);
             getIncenseArticleBrief(ids);
+        }
+        else
+        {
+            getIncenseArticleBrief([]);
         }
     }, [page, articleListId]);
 
@@ -103,11 +120,11 @@ const Incense = ({ name }) => {
 
     return(
         <div className="content">
-            <div className="Header-space-box"/>
+            {/* <div className="Header-space-box"/> */}
             <div className="Incense-container">
                 <div className="IncenseArticle-list vertical">
                     <Input.Group compact>
-                        <Select  style={{ width: "40%" }} defaultValue="IncenseArticle" onChange={(value) => setQueryType(value)}>
+                        <Select style={{ width: "40%" }} defaultValue="IncenseArticle" onChange={(value) => setQueryType(value)}>
                             <Option value="IncenseArticle">上香文標題</Option>
                             <Option value="Initiator">發起者姓名</Option>
                         </Select>
