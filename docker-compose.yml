@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  backend:
+    build: 
+      context: ./backend
+    ports: 
+      - 5000:5000
+    environment:
+      MONGO_URL: mongodb+srv://oscar000803:L2-X6!z!Vfqpi2n@cluster0.ekwhi.mongodb.net/onlinetemple?retryWrites=true&w=majority
+      PORT: 5000
