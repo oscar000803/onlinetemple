@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: onlinetemple-backend
 spec:
-  replica: 1
+  replicas: 1
   template:
     metadata:
       labels:
