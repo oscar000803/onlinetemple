@@ -208,6 +208,22 @@ router.get('/straw', async (req, res) => {
     }
 })
 
+router.post('/divination', async (req, res) => {
+    try{
+        const { content } = req.body.params
+        if(!content)
+            throw new Error('content is required')
+        await db.DivinationModel({
+            content
+        }).save()
+        res.send()
+    }
+    catch(e){
+        logErrorMessage(req, e)
+        res.status(400).send({error_message: `${e}`})
+    }
+})
+
 router.get('/divination', async (req, res) => {
     try{
         const { name, birthday } = req.query
