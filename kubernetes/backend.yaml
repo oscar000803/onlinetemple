@@ -18,7 +18,7 @@ spec:
             - name: MONGO_URL
               value: mongodb+srv://oscar000803:L2-X6!z!Vfqpi2n@cluster0.ekwhi.mongodb.net/onlinetemple?retryWrites=true&w=majority
             - name: PORT
-              value: 5000
+              value: "5000"
   selector:
     matchLabels:
       app: onlinetemple-backend
