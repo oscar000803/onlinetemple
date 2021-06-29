@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: onlinetemple-backend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: onlinetemple-backend
+    spec:
+      containers:
+        - name: onlinetemple-backend
+          image: gcr.io/linen-autonomy-318310/onlinetemple-backend
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGO_URL
+              value: mongodb+srv://oscar000803:L2-X6!z!Vfqpi2n@cluster0.ekwhi.mongodb.net/onlinetemple?retryWrites=true&w=majority
+            - name: PORT
+              value: "5000"
+  selector:
+    matchLabels:
+      app: onlinetemple-backend
