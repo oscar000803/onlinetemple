@@ -9,7 +9,6 @@ const NameBox = ({ name }) => (
         <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }}>
             {name[0]}
         </Avatar>}
-        
         {name}
     </div>
 )

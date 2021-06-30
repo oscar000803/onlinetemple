@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors'
+import fs from 'fs'
 import path from 'path'
+import https from 'https'
 import mongo from './mongo'
 require('dotenv').config()
 
@@ -23,6 +25,17 @@ const port = process.env.PORT || 3000
 
 mongo.connect();
 
-app.listen(port, () => {
+const sslServer = https.createServer({
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
+    },
+    app
+)
+
+
+sslServer.listen(port, () => {
     console.log(`Server is up on port ${port}.`)
 })
+// app.listen(port, () => {
+//     console.log(`Server is up on port ${port}.`)
+// })
