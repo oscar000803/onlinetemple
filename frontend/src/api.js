@@ -3,7 +3,7 @@ import axios from 'axios'
 import dotenv from 'dotenv-defaults';
 dotenv.config();
 
-const instance = axios.create({ baseURL: "https://34.81.171.221:5000" })
+const instance = axios.create({ baseURL: "http://34.81.171.221:5000" })
 
 const sendMessage = async (type, url, message) => {
     console.log("SEND MESSAGE:", message)
