@@ -6,7 +6,7 @@ import NameBox from '../components/NameBox';
 import { sendMessage } from '../api';
 import { UserOutlined } from '@ant-design/icons';
 
-const MAX_ARTICLE_A_PAGE = 16;
+const MAX_ARTICLE_A_PAGE = 15;
 const { Option } = Select;
 const { Search } = Input;
 
@@ -130,25 +130,27 @@ const Incense = ({ name }) => {
                         </Select>
                         <Search allowClear enterButton style={{ width: "60%" }} defaultValue="" onSearch={onSearch}/>
                     </Input.Group>
-                    <Menu 
-                        mode="vertical"
-                        onClick={handleClick}
-                        style={{ width: "20vw" }}
-                    >
-                        {articleList.map((article, i)=>(
-                            <Menu.Item key={article.incenseArticle_ids}>
-                                <div className="IncenseArticleBox">
-                                    {article.name === "匿名" ? 
-                                        <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }} icon={<UserOutlined />} />
-                                        : 
-                                        <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }}>
-                                            {article.name[0]}
-                                        </Avatar>}
-                                    {article.title}
-                                </div>
-                            </Menu.Item>
-                        ))}
-                    </Menu>
+                    <div className="IncenseArticle-list-menu">
+                        <Menu 
+                            mode="vertical"
+                            onClick={handleClick}
+                            style={{ width: "20vw" }}
+                        >
+                            {articleList.map((article, i)=>(
+                                <Menu.Item key={article.incenseArticle_ids}>
+                                    <div className="IncenseArticleBox">
+                                        {article.name === "匿名" ? 
+                                            <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }} icon={<UserOutlined />} />
+                                            : 
+                                            <Avatar size={30} gap={5} style={{ backgroundColor: '#6699CC' }}>
+                                                {article.name[0]}
+                                            </Avatar>}
+                                        {article.title}
+                                    </div>
+                                </Menu.Item>
+                            ))}
+                        </Menu>
+                    </div>
                     <div className="push-down"/>
                     <div className="IncenseArticle-list-panel vertical">
                         <Pagination current={page} onChange={(page) => setPage(page)} total={Math.ceil(articleListId.length / MAX_ARTICLE_A_PAGE)*10} />

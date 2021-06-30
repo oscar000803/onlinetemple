@@ -130,9 +130,22 @@ pre {
   overflow: auto;
 }
 
+.IncenseArticle-list-menu{
+  max-height: 85%;
+  width: 100%;
+  overflow: auto;
+}
+
 .IncenseArticle-list-panel {
   height: 100px;
   justify-content: space-evenly;
+  width: 100%;
+  overflow: auto;
+}
+
+.IncenseArticleBox {
+  width: 100%;
+  overflow: auto;
 }
 
 .IncenseArticleBox span  {
@@ -159,14 +172,14 @@ pre {
   color: white;
   width: 100%;
   height: fit-content;
-  max-height: 90%;
+  overflow: auto;
   justify-content: flex-start;
 }
 
 .IncenseArticle-info-panel {
   color: white;
   width: 100%;
-  height: fit-content;
+  height: 250px;
 }
 
 .IncenseArticle-info-panel button {
